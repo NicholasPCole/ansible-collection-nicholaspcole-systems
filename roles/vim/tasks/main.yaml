@@ -1,0 +1,20 @@
+---
+- name: Include operating system family variables.
+  ansible.builtin.include_vars:
+    file: "{{ ansible_os_family }}.yaml"
+  when: ansible_system == "Linux"
+
+- name: Install vim.
+  ansible.builtin.package:
+    name: "{{ vim_package_name }}"
+    state: present
+  become: true
+  when: ansible_system == "Linux"
+
+- name: Configure vim.
+  ansible.builtin.template:
+    src: .vimrc.j2
+    dest: "{{ nicholaspcole_systems_user_directory }}/.vimrc"
+    mode: '0644'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ nicholaspcole_systems_sudo_user_group }}"

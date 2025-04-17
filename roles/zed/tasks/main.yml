@@ -1,0 +1,13 @@
+---
+- name: Install Zed.
+  community.general.homebrew_cask:
+    name: zed
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Configure Zed.
+  ansible.builtin.copy:
+    content: "{{ zed_configuration | to_json(indent=2, sort_keys=true) }}\n"
+    dest: "{{ zed_configuration_file_path }}"
+    mode: "0600"
+  when: ansible_system == "Darwin"

@@ -1,0 +1,18 @@
+---
+- name: Include system variables.
+  ansible.builtin.include_vars: "{{ ansible_system }}.yaml"
+
+- name: Include install tasks ({{ ansible_system }}).
+  ansible.builtin.include_tasks:
+    file: install-{{ ansible_system }}.yaml
+
+- name: Configure Sublime Text.
+  ansible.builtin.template:
+    src: Preferences.sublime-settings.j2
+    dest: "{{ sublime_text_configuration_directory_path }}/Packages/User/Preferences.sublime-settings"
+
+- name: Install the Just package.
+  ansible.builtin.git:
+    repo: https://github.com/nk9/just_sublime.git
+    dest: "{{ sublime_text_configuration_directory_path }}/Packages/User/just_sublime"
+    version: 08bbc62e9e77c82fb0fa6cabc0630cb5cc4bcd0e

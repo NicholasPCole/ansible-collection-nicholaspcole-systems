@@ -1,0 +1,22 @@
+---
+- name: Install pre-requisites.
+  ansible.builtin.package:
+    name: apt-transport-https
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Import the GPG key (Debian).
+  ansible.builtin.apt_key:
+    url: "{{ sublime_text_gpg_key_url }}"
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Add the stable repository (Debian).
+  ansible.builtin.apt_repository:
+    filename: sublime-text
+    repo: deb https://download.sublimetext.com/ apt/stable/
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"

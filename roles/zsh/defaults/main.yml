@@ -1,0 +1,2 @@
+---
+zsh_configuration_directory_path: "{{ nicholaspcole_systems_user_directory }}/.zshrc.d"

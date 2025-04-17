@@ -1,0 +1,2 @@
+---
+sublime_text_configuration_directory_path: "{{ ansible_user_dir }}/Library/Application Support/Sublime Text"

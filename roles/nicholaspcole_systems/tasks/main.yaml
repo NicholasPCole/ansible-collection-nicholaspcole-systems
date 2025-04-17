@@ -1,0 +1,11 @@
+---
+- name: Include system variables.
+  ansible.builtin.include_vars: "{{ ansible_system }}.yaml"
+
+- name: Create scripts directory.
+  ansible.builtin.file:
+    path: "{{ nicholaspcole_systems_scripts_directory }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ nicholaspcole_systems_sudo_user_group }}"
+    mode: '0755'

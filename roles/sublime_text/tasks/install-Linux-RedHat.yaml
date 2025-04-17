@@ -1,0 +1,18 @@
+---
+- name: Import the GPG key (Red Hat).
+  ansible.builtin.rpm_key:
+    key: "{{ sublime_text_gpg_key_url }}"
+    state: present
+  become: true
+  when: ansible_os_family == "RedHat"
+
+- name: Add the stable repository (Red Hat).
+  ansible.builtin.yum_repository:
+    name: sublime-text
+    baseurl: https://download.sublimetext.com/rpm/stable/x86_64
+    description: Sublime Text - x86_64 - Stable
+    gpgcheck: true
+    enabled: true
+    gpgkey: "{{ sublime_text_gpg_key_url }}"
+  become: true
+  when: ansible_os_family == "RedHat"

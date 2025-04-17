@@ -1,0 +1,33 @@
+---
+- name: Install git (macOS).
+  community.general.homebrew:
+    name: git
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install git (Linux).
+  ansible.builtin.package:
+    name: git
+    state: present
+  become: true
+  when: ansible_system == "Linux"
+
+- name: Create the configuration directory.
+  ansible.builtin.file:
+    path: "{{ git_config_directory_path }}"
+    state: directory
+
+- name: Configure git.
+  ansible.builtin.template:
+    src: config.j2
+    dest: "{{ git_config_file_path }}"
+
+- name: Configure files to exclude (.gitignore).
+  ansible.builtin.template:
+    src: .gitignore.j2
+    dest: "{{ git_core_excludesfile_path }}"
+
+- name: Configure allowed signers.
+  ansible.builtin.template:
+    src: allowed_signers.j2
+    dest: "{{ git_gpg_ssh_allowedsignersfile_path }}"

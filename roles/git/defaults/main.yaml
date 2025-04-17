@@ -1,0 +1,5 @@
+---
+git_config_directory_path: "{{ ansible_user_dir }}/.config/git"
+git_config_file_path: "{{ git_config_directory_path }}/config"
+git_core_excludesfile_path: "{{ git_config_directory_path }}/.gitignore"
+git_gpg_ssh_allowedsignersfile_path: "{{ git_config_directory_path }}/allowed_signers"

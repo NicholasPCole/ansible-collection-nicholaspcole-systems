@@ -1,0 +1,3 @@
+---
+nicholaspcole_systems_root_user_group: root
+nicholaspcole_systems_sudo_user_group: "{{ ansible_user_id }}"

@@ -1,0 +1,19 @@
+---
+- name: Install Terraform (macOS).
+  community.general.homebrew:
+    name: terraform
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Create the configuration directories.
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ terraform_configuration_directory_path }}"
+    - "{{ terraform_plugin_cache_directory_path }}"
+
+- name: Configure Terraform.
+  ansible.builtin.template:
+    src: .terraformrc.j2
+    dest: "{{ terraform_configuration_file_path }}"

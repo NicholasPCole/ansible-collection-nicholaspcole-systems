@@ -1,0 +1,39 @@
+---
+- name: Install dockutil.
+  community.general.homebrew:
+    name: dockutil
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Remove all items from the dock.
+  ansible.builtin.command:
+    cmd: /opt/homebrew/bin/dockutil --remove all --no-restart
+  when: ansible_system == "Darwin"
+
+- name: Check if apps exist.
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  when: ansible_system == "Darwin"
+  loop: "{{ dockutil_apps }}"
+  register: stat_dockutil_apps
+
+- name: Add existing apps to dock.
+  ansible.builtin.command:
+    cmd: /opt/homebrew/bin/dockutil --add '{{ item.stat.path }}' --no-restart
+  loop: "{{ stat_dockutil_apps.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when:
+    - ansible_system == "Darwin"
+    - item.stat.exists
+
+- name: Add folders to dock.
+  ansible.builtin.command:
+    cmd: /opt/homebrew/bin/dockutil --add "{{ item }}" --display folder --sort name --view list
+  when: ansible_system == "Darwin"
+  loop: "{{ dockutil_folders }}"
+
+- name: Restart the dock to apply changes.
+  ansible.builtin.command:
+    cmd: /usr/bin/killall Dock
+  when: ansible_system == "Darwin"

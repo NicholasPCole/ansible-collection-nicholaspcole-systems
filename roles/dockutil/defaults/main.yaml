@@ -1,0 +1,19 @@
+---
+dockutil_apps:
+  - /System/Applications/Utilities/Activity Monitor.app
+  - /Applications/Keyboard Maestro.app
+  - /Applications/1Password.app
+  - /System/Applications/Calendar.app
+  - /System/Applications/Mail.app
+  - /Applications/Slack.app
+  - /Applications/Signal.app
+  - /Applications/Discord.app
+  - /Applications/Google Chrome.app
+  - /Applications/Firefox.app
+  - /Applications/Sublime Text.app
+  - /Applications/Sublime Merge.app
+  - /Applications/Typora.app
+  - /Applications/iTerm.app
+dockutil_folders:
+  - /Applications
+  - "{{ ansible_user_dir }}"

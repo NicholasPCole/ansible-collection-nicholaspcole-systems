@@ -1,0 +1,12 @@
+---
+- name: Include install tasks ({{ ansible_os_family }}).
+  ansible.builtin.include_tasks:
+    file: install-{{ ansible_os_family }}.yaml
+  when: ansible_system == "Linux"
+
+- name: Install Sublime Text (Linux).
+  ansible.builtin.package:
+    name: sublime-text
+    state: present
+  become: true
+  when: ansible_system == "Linux"

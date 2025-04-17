@@ -1,0 +1,6 @@
+---
+- name: Install Sublime Text (macOS).
+  community.general.homebrew_cask:
+    name: sublime-text
+    state: present
+  when: ansible_system == "Darwin"

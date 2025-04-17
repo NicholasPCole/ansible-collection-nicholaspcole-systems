@@ -1,0 +1,30 @@
+---
+zed_configuration:
+  base_keymap: SublimeText
+  calls:
+    mute_on_join: true
+  chat_panel:
+    button: never
+  collaboration_panel:
+    button: false
+  confirm_quit: true
+  features:
+    copilot: true
+  journal:
+    hour_format: hour24
+  line_height: standard
+  tabs:
+    git_status: true
+  telemetry:
+    diagnostics: false
+    metrics: false
+  theme:
+    light: One Light
+    mode: system
+    dark: One Dark
+  ui_font_size: 16
+  wrap_guides:
+    - 72
+    - 80
+    - 160
+zed_configuration_file_path: "{{ ansible_user_dir }}/.config/zed/settings.json"

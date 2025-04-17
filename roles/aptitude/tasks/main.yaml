@@ -1,0 +1,26 @@
+---
+- name: Install aptitude (Debian).
+  ansible.builtin.package:
+    name: aptitude
+    state: present
+    update_cache: true
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Create the configuration directory.
+  ansible.builtin.file:
+    path: /etc/apt
+    mode: '0755'
+    owner: root
+    group: root
+    state: directory
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Configure aptitude.
+  ansible.builtin.template:
+    src: aptitude.config.j2
+    dest: /etc/apt/apt.conf
+    mode: '0644'
+  become: true
+  when: ansible_os_family == "Debian"

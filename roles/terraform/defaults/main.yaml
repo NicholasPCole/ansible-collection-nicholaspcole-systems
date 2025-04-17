@@ -1,0 +1,4 @@
+---
+terraform_configuration_directory_path: "{{ ansible_user_dir }}/.terraform.d"
+terraform_configuration_file_path: "{{ ansible_user_dir }}/.terraformrc"
+terraform_plugin_cache_directory_path: "{{ terraform_configuration_directory_path }}/plugin-cache"

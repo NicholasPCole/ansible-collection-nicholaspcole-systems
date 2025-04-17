@@ -1,0 +1,24 @@
+---
+- name: Install Zsh (macOS).
+  community.general.homebrew:
+    name: zsh
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Configure Zsh.
+  ansible.builtin.template:
+    src: .zshrc.j2
+    dest: "{{ ansible_user_dir }}/.zshrc"
+
+- name: Create directory for add-on Zsh configuration files.
+  ansible.builtin.file:
+    path: "{{ zsh_configuration_directory_path }}"
+    state: directory
+    mode: "0700"
+
+- name: Template add-on Zsh configuration files.
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ zsh_configuration_directory_path }}/{{ item | basename | regex_replace('\\.j2$', '') }}"
+  with_fileglob:
+    - ../templates/.zshrc.d/*.j2

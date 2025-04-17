@@ -1,0 +1,16 @@
+---
+- name: Apply most roles.
+  hosts: all
+  roles:
+    - aptitude
+    - git
+    - screen
+    - terraform
+    - vim
+    - zsh
+
+- name: Apply roles to desktops.
+  hosts: desktops
+  roles:
+    - sublime_text
+    - zed

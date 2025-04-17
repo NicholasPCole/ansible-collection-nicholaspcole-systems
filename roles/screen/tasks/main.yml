@@ -1,0 +1,17 @@
+---
+- name: Install screen (macOS).
+  community.general.homebrew:
+    name: screen
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install screen (Linux).
+  package:
+    name: screen
+    state: present
+  when: ansible_system == "Linux"
+
+- name: Configure screen.
+  template:
+    src: screenrc.j2
+    dest: "{{ nicholaspcole_systems_user_directory }}/.screenrc"
