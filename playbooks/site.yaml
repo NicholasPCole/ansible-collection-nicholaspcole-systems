@@ -3,14 +3,14 @@
   hosts: all
   roles:
     - aptitude
-    - git
     - screen
-    - terraform
     - vim
     - zsh
 
 - name: Apply roles to desktops.
   hosts: desktops
   roles:
+    - git
     - sublime_text
+    - terraform
     - zed
