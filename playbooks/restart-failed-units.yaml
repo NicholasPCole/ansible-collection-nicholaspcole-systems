@@ -3,16 +3,16 @@
   hosts: all
   gather_facts: true
   tasks:
-    - name: Get failed systemd units.
-      ansible.builtin.command: systemctl --failed --output json
+    - name: Get systemd units.
+      community.general.systemd_info:
       when: ansible_system == "Linux"
-      register: systemd_failed_units
+      register: systemd_units
       changed_when: false
 
     - name: Restart failed unit(s).
-      ansible.builtin.service:
-        name: "{{ item.unit }}"
+      ansible.builtin.systemd_service:
+        name: "{{ item }}"
         state: restarted
-      become: true
-      loop: "{{ systemd_failed_units.stdout }}"
       when: ansible_system == "Linux"
+      become: true
+      loop: "{{ systemd_units.units | dict2items | community.general.json_query('[?value.activestate==`failed`].key') }}"
