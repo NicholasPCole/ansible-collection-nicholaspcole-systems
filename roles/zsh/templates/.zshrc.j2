@@ -9,7 +9,7 @@ function prompt_character {
 }
 
 function prompt_username {
-    if [ "$(whoami)" = "nicholas" ]; then
+    if [ "$(whoami)" = "{{ nicholaspcole_systems_default_user }}" ]; then
         echo ""
     else 
         echo "$(whoami)@"
