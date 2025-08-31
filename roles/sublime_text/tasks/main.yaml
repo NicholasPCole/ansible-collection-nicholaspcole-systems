@@ -10,6 +10,9 @@
   ansible.builtin.template:
     src: Preferences.sublime-settings.j2
     dest: "{{ sublime_text_configuration_directory_path }}/Packages/User/Preferences.sublime-settings"
+    mode: "0644"
+    owner: "{{ nicholaspcole_systems_default_user }}"
+    group: "{{ nicholaspcole_systems_sudo_user_group }}"
 
 - name: Install the Just package.
   ansible.builtin.git:
