@@ -27,4 +27,5 @@ zed_configuration:
     - 72
     - 80
     - 160
-zed_configuration_file_path: "{{ ansible_user_dir }}/.config/zed/settings.json"
+zed_configuration_directory_path: "{{ ansible_user_dir }}/.config/zed"
+zed_configuration_file_path: "{{ zed_configuration_directory_path }}/settings.json"

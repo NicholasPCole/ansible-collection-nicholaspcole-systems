@@ -5,6 +5,11 @@
     state: present
   when: ansible_system == "Darwin"
 
+- name: Create the configuration directory.
+  ansible.builtin.file:
+    path: "{{ zed_configuration_directory_path }}"
+    state: directory
+
 - name: Configure Zed.
   ansible.builtin.copy:
     content: "{{ zed_configuration | to_json(indent=2, sort_keys=true) }}\n"
