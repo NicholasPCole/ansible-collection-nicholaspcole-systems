@@ -19,3 +19,6 @@ sublime_text_configuration:
   spell_check: true
   translate_tabs_to_spaces: true
   trim_trailing_white_space_on_save: true
+sublime_text_configuration_subdirectories:
+  - Local
+  - Packages/User

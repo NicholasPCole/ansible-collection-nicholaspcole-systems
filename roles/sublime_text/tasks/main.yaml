@@ -6,6 +6,17 @@
   ansible.builtin.include_tasks:
     file: install-{{ ansible_system }}.yaml
 
+- name: Create the configuration directory.
+  ansible.builtin.file:
+    path: "{{ sublime_text_configuration_directory_path }}"
+    state: directory
+
+- name: Create the configuration sub-directories.
+  ansible.builtin.file:
+    path: "sublime_text_configuration_directory_path/{{ item }}"
+    state: directory
+  loop: "{{ sublime_text_configuration_subdirectories }}"
+
 - name: Configure Sublime Text.
   ansible.builtin.template:
     src: Preferences.sublime-settings.j2
