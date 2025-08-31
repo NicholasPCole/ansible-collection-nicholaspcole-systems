@@ -27,7 +27,7 @@
 
 - name: Copy the license key.
   ansible.builtin.copy:
-    content: lookup('community.general.onepassword', 'Sublime Text', errors='ignore', field='license key')
+    content: "{{ lookup('community.general.onepassword', 'Sublime Text', errors='ignore', field='license key') }}"
     dest: "{{ sublime_text_configuration_directory_path }}/Local/License.sublime_license"
     mode: "0600"
   ignore_errors: true
