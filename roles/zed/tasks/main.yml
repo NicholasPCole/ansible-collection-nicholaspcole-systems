@@ -9,6 +9,7 @@
   ansible.builtin.file:
     path: "{{ zed_configuration_directory_path }}"
     state: directory
+  when: ansible_system == "Darwin"
 
 - name: Configure Zed.
   ansible.builtin.copy:
