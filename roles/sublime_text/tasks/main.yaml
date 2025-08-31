@@ -25,6 +25,14 @@
     owner: "{{ nicholaspcole_systems_default_user }}"
     group: "{{ nicholaspcole_systems_sudo_user_group }}"
 
+- name: Copy the license key.
+  ansible.builtin.copy:
+    content: lookup('community.general.onepassword', 'Sublime Text', errors='ignore', field='license key')
+    dest: "{{ sublime_text_configuration_directory_path }}/Local/License.sublime_license"
+    mode: "0600"
+  ignore_errors: true
+  no_log: true
+
 - name: Install the Just package.
   ansible.builtin.git:
     repo: https://github.com/nk9/just_sublime.git
