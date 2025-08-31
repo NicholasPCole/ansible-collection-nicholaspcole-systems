@@ -13,7 +13,7 @@
 
 - name: Create the configuration sub-directories.
   ansible.builtin.file:
-    path: "sublime_text_configuration_directory_path/{{ item }}"
+    path: "{{ sublime_text_configuration_directory_path }}/{{ item }}"
     state: directory
   loop: "{{ sublime_text_configuration_subdirectories }}"
 
