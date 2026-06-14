@@ -1,4 +1,8 @@
 ---
+- name: Trust the Terraform Homebrew formula.
+  ansible.builtin.command: /opt/homebrew/bin/brew trust --formula hashicorp/tap/terraform
+  when: ansible_system == "Darwin"
+
 - name: Install Terraform (macOS).
   community.general.homebrew:
     name: terraform
