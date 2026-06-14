@@ -5,6 +5,13 @@
     state: present
   when: ansible_system == "Darwin"
 
+- name: Install Zsh (Linux).
+  ansible.builtin.package:
+    name: zsh
+    state: present
+  when: ansible_system == "Linux"
+  become: true
+
 - name: Configure Zsh.
   ansible.builtin.template:
     src: .zshrc.j2
