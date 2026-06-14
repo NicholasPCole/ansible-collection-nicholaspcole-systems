@@ -1,0 +1,2 @@
+---
+tailscale_gpg_key_url: https://pkgs.tailscale.com/stable/debian/{{ ansible_lsb['codename'] }}.noarmor.gpg

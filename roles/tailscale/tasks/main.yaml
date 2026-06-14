@@ -1,0 +1,67 @@
+---
+- name: Include system variables.
+  ansible.builtin.include_vars: "{{ ansible_system }}.yaml"
+
+- name: Include OS family variables (Linux).
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yaml"
+  when: ansible_system == "Linux"
+
+- name: Include tasks to install Tailscale.
+  ansible.builtin.include_tasks:
+    file: install-{{ ansible_os_family }}.yaml
+  when: ansible_system == "Linux"
+
+- name: Gather package facts (Linux).
+  ansible.builtin.package_facts:
+  when: ansible_system == "Linux"
+
+- name: Add tailscale0 interface to firewalld internal zone.
+  ansible.posix.firewalld:
+    zone: internal
+    interface: tailscale0
+    permanent: true
+    immediate: true
+    state: enabled
+  become: true
+  when: ansible_system == "Linux" and "firewalld" in ansible_facts.packages
+
+- name: Start Tailscale.
+  ansible.builtin.service:
+    name: tailscaled
+    state: started
+  become: true
+  when: ansible_system == "Linux"
+
+- name: Get Tailscale status.
+  ansible.builtin.command: "{{ tailscale_binary_path }} status --json"
+  register: tailscale_status
+  changed_when: false
+
+- name: Log in to Tailscale.
+  ansible.builtin.command: "{{ tailscale_binary_path }} up --authkey {{ tailscale_auth_key }}"
+  become: true
+  when:
+    - ansible_system == "Linux"
+    - tailscale_status.stdout | from_json | json_query('BackendState') == 'NeedsLogin'
+  register: tailscale_up
+  ignore_errors: "{{ ansible_check_mode }}"
+  changed_when: true
+  failed_when: tailscale_up.rc != 0
+  no_log: true
+
+- name: Get IPv4 address.
+  ansible.builtin.command: "{{ tailscale_binary_path }} ip --4"
+  register: tailscale_ipv4_command
+  changed_when: false
+  check_mode: false
+
+- name: Get IPv6 address.
+  ansible.builtin.command: "{{ tailscale_binary_path }} ip --6"
+  register: tailscale_ipv6_command
+  changed_when: false
+  check_mode: false
+
+- name: Set facts for the Tailscale IP addresses.
+  ansible.builtin.set_fact:
+    tailscale_ipv4_address: "{{ tailscale_ipv4_command.stdout }}"
+    tailscale_ipv6_address: "{{ tailscale_ipv6_command.stdout }}"

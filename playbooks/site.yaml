@@ -4,6 +4,7 @@
   roles:
     - aptitude
     - screen
+    - tailscale
     - vim
     - zsh
 

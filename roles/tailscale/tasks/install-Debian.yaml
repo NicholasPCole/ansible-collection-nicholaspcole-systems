@@ -1,0 +1,44 @@
+---
+- name: Create the keyrings directory.
+  ansible.builtin.file:
+    path: /usr/share/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Download the GPG key.
+  ansible.builtin.get_url:
+    url: "{{ tailscale_gpg_key_url }}"
+    dest: /usr/share/keyrings/tailscale-archive-keyring.gpg
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: Add the repository (Debian 12 and older).
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/debian {{ ansible_distribution_release }} main
+    state: present
+  become: true
+  when: ansible_distribution_major_version is version('13', '<')
+
+- name: Add the repository (Debian 13 and newer).
+  ansible.builtin.deb822_repository:
+    components: main
+    name: tailscale
+    signed_by: /usr/share/keyrings/tailscale-archive-keyring.gpg
+    suites: "{{ ansible_distribution_release }}"
+    types: deb
+    uris: https://pkgs.tailscale.com/stable/debian
+  become: true
+  when: ansible_distribution_major_version is version('13', '>=')
+
+- name: Install Tailscale.
+  ansible.builtin.apt:
+    name: tailscale
+    state: present
+    update_cache: true
+  become: true
