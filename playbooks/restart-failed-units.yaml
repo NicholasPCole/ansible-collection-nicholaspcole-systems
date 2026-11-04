@@ -2,6 +2,7 @@
 - name: Restart failed units.
   hosts: all
   gather_facts: true
+  strategy: free
   tasks:
     - name: Get systemd units.
       community.general.systemd_info:
