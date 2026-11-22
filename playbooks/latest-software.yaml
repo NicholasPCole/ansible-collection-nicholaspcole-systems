@@ -1,0 +1,23 @@
+---
+- name: Upgrade installed packages.
+  hosts: all
+  # For some reason, this playbook triggers a run-once[play] failure even though run_once is not used. This might be worth a bug report to ansible-lint.
+  # noqa: run-once[play]
+  strategy: free
+  tasks:
+    - name: Upgrade installed packages (Debian).
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+      when: ansible_os_family == "Debian"
+      become: true
+
+    - name: Upgrade installed packages (Red Hat).
+      ansible.builtin.dnf:
+        name: "*"
+        # Ignore the "package-latest" Ansible lint rule, since this playbook is specifically about upgrading installed packages.
+        state: latest # noqa: package-latest
+        disablerepo: elastic
+        update_cache: true
+      when: ansible_os_family == "RedHat"
+      become: true
