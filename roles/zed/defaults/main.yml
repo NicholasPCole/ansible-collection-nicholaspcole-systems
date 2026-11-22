@@ -7,22 +7,55 @@ zed_configuration:
     button: never
   collaboration_panel:
     button: false
+  colorize_brackets: true
   confirm_quit: true
+  cursor_animation:
+    enabled: false
   features:
     copilot: true
+  format_on_save: 'off'
+  indent_guides:
+    background_coloring: indent_aware
+    coloring: indent_aware
   journal:
     hour_format: hour24
   line_height: standard
+  minimap:
+    show: never
+  on_new_window: launchpad
+  project_panel:
+    diagnostic_badges: true
+    dock: left
+    git_status_indicator: true
+  redact_private_values: true
+  scroll_beyond_last_line: 'off'
+  show_whitespaces: selection
+  soft_wrap: editor_width
+  status_bar:
+    active_encoding_button: enabled
+    lind_endings_button: true
+    show_active_file: false
+  tab_bar:
+    show_pinned_tabs_in_separate_row: true
   tabs:
+    file_icons: false
     git_status: true
   telemetry:
     diagnostics: false
     metrics: false
+  terminal:
+    show_count_badge: true
   theme:
     light: One Light
     mode: system
     dark: One Dark
+  title_bar:
+    show_branch_status_icon: true
   ui_font_size: 16
+  use_system_prompts: true
+  use_system_path_prompts: true
+  which_key:
+    enabled: true
   wrap_guides:
     - 72
     - 80
