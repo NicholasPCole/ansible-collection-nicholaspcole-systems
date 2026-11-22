@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# {{ nicholaspcole_systems_ansible_managed }}
+
+curl -s http://{{ prometheus_node_exporter_listen_address }}:9100/metrics | grep -avE '(HELP|TYPE|go_gc_duration_seconds|go_memstats|promhttp_metric_handler)'

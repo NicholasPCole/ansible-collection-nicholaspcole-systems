@@ -1,0 +1,15 @@
+{% if ansible_system == "Linux" %}
+# {{ nicholaspcole_systems_ansible_managed }}
+
+{% raw -%}
+# Set the command-line arguments to pass to the server.
+# Due to shell escaping, to pass backslashes for regexes, you need to double
+# them (\\d for \d). If running under systemd, you need to double them again
+# (\\\\d to mean \d), and escape newlines too.
+{% endraw %}
+
+ARGS='{% endif %}--collector.disable-defaults
+{% for argument in prometheus_node_exporter_arguments %}
+{{ argument }}
+{% endfor %}
+{% if ansible_system == "Linux" %}'{% endif %}

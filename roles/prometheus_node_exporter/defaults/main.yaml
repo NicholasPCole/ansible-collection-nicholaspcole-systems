@@ -1,0 +1,16 @@
+---
+prometheus_node_exporter_arguments_common:
+  - '--collector.cpu'
+  - '--collector.diskstats'
+  - '--collector.filesystem'
+  - '--collector.loadavg'
+  - '--collector.meminfo'
+  - '--collector.netdev'
+  - '--collector.os'
+  - '--collector.powersupplyclass'
+  - '--collector.time'
+  - '--collector.uname'
+  - '--web.listen-address={{ prometheus_node_exporter_listen_address }}:9100'
+prometheus_node_exporter_arguments_os_family: []
+prometheus_node_exporter_arguments_system: []
+prometheus_node_exporter_listen_address: "{{ tailscale_ipv4_address }}"

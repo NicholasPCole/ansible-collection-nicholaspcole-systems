@@ -3,6 +3,7 @@
   hosts: all
   roles:
     - aptitude
+    - prometheus_node_exporter
     - screen
     - tailscale
     - vim
@@ -15,3 +16,8 @@
     - sublime_text
     - terraform
     - zed
+
+- name: Apply roles to leader.
+  hosts: leader
+  roles:
+    - prometheus

@@ -1,0 +1,4 @@
+---
+prometheus_node_exporter_arguments_os_family:
+  - '--collector.diskstats.ignored-devices="^(dm-{{ "\\\\d" }}+|zram{{ "\\\\d" }}+)$"'
+prometheus_node_exporter_package_name: node-exporter

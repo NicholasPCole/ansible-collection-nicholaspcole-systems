@@ -1,0 +1,31 @@
+# {{ nicholaspcole_systems_ansible_managed }}
+
+global:
+  scrape_interval: 1m
+alerting:
+  alertmanagers:
+    - scheme: https
+      static_configs:
+        - targets:
+{% for host in groups['leader'] %}
+            - alertmanager.{{ hostvars[host]['ansible_nodename'] }}.{{ domain_name }}
+{% endfor %}
+rule_files:
+  - /etc/prometheus/alerting_rules/*.yaml
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+{% for host in groups['leader'] %}
+          - {{ hostvars[host]['ansible_nodename'] }}:9089
+{% endfor %}
+  - job_name: node
+    static_configs:
+      - targets:
+{% for host in groups['all'] | sort %}
+          - {{ hostvars[host]['ansible_nodename'] }}:9100
+{% endfor %}
+    metric_relabel_configs:
+      - source_labels: [instance]
+        target_label: hostname
+        regex: "(.*?):\\d+"

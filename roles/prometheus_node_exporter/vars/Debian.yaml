@@ -1,0 +1,5 @@
+---
+prometheus_node_exporter_package_name: prometheus-node-exporter
+prometheus_node_exporter_arguments_os_family:
+  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1032329
+  - '--collector.netdev.device-exclude='

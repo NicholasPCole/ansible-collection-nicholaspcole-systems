@@ -1,0 +1,60 @@
+---
+- name: Install Prometheus.
+  ansible.builtin.dnf:
+    name: prometheus
+    state: present
+  become: true
+
+- name: Enable Prometheus.
+  ansible.builtin.systemd_service:
+    name: prometheus.service
+    enabled: true
+  become: true
+
+- name: Configure the Prometheus environment.
+  ansible.builtin.template:
+    src: prometheus.j2
+    dest: /etc/default/prometheus
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  notify:
+    - Restart Prometheus.
+
+- name: Configure Prometheus.
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: "/etc/prometheus/prometheus.yml"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  notify:
+    - Reload Prometheus.
+
+- name: Create a directory for alerting rules.
+  ansible.builtin.file:
+    path: /etc/prometheus/alerting_rules
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
+- name: Configure alerting rules.
+  ansible.builtin.template:
+    src: alerting-rules/node_exporter.yaml.j2
+    dest: /etc/prometheus/alerting_rules/node_exporter.yaml
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  notify:
+    - Reload Prometheus.
+
+- name: Start Prometheus.
+  ansible.builtin.systemd_service:
+    name: prometheus.service
+    state: started
+  become: true

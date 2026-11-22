@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: nicholaspcole_systems
+  - role: tailscale

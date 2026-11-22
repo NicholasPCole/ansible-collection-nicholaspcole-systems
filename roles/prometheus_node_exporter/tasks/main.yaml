@@ -1,0 +1,57 @@
+---
+- name: Include system variables.
+  ansible.builtin.include_vars: "{{ ansible_system }}.yaml"
+
+- name: Include OS family variables (Linux).
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yaml"
+  when: ansible_system == "Linux"
+
+- name: Install node_exporter (macOS).
+  community.general.homebrew:
+    name: node_exporter
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install node_exporter (Linux).
+  ansible.builtin.package:
+    name: "{{ prometheus_node_exporter_package_name }}"
+    state: present
+  become: true
+  when: ansible_system == "Linux"
+
+- name: Template the node_exporter environment file.
+  ansible.builtin.template:
+    src: prometheus-node-exporter.j2
+    dest: "{{ prometheus_node_exporter_environment_path }}"
+    owner: "{{ ansible_user_id if ansible_system == 'Darwin' else 'root' }}"
+    group: "{{ nicholaspcole_systems_sudo_user_group if ansible_system == 'Darwin' else 'root' }}"
+    mode: "0644"
+  become: "{{ False if ansible_system == 'Darwin' else True }}"
+  vars:
+    prometheus_node_exporter_arguments: >
+      {{ [prometheus_node_exporter_arguments_common,
+        prometheus_node_exporter_arguments_system,
+        prometheus_node_exporter_arguments_os_family] | flatten | sort }}
+  notify:
+    - Restart node_exporter (Linux).
+    - Restart node_exporter (macOS).
+
+- name: Allow service in firewalld.
+  ansible.posix.firewalld:
+    zone: internal
+    service: prometheus-node-exporter
+    permanent: true
+    immediate: true
+    state: enabled
+  become: true
+  when:
+    - ansible_system == "Linux"
+    - "'firewalld' in ansible_facts.packages"
+
+- name: Template a script to show metrics.
+  ansible.builtin.template:
+    src: show-node-exporter-metrics.sh.j2
+    dest: "{{ nicholaspcole_systems_scripts_directory }}/show-node-exporter-metrics.sh"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ nicholaspcole_systems_sudo_user_group }}"
+    mode: "0755"
