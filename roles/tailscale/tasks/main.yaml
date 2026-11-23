@@ -1,19 +1,19 @@
 ---
 - name: Include system variables.
-  ansible.builtin.include_vars: "{{ ansible_system }}.yaml"
+  ansible.builtin.include_vars: "{{ ansible_facts['system'] }}.yaml"
 
 - name: Include OS family variables (Linux).
-  ansible.builtin.include_vars: "{{ ansible_os_family }}.yaml"
-  when: ansible_system == "Linux"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yaml"
+  when: ansible_facts["system"] == "Linux"
 
 - name: Include tasks to install Tailscale.
   ansible.builtin.include_tasks:
-    file: install-{{ ansible_os_family }}.yaml
-  when: ansible_system == "Linux"
+    file: install-{{ ansible_facts["os_family"] }}.yaml
+  when: ansible_facts["system"] == "Linux"
 
 - name: Gather package facts (Linux).
   ansible.builtin.package_facts:
-  when: ansible_system == "Linux"
+  when: ansible_facts["system"] == "Linux"
 
 - name: Add tailscale0 interface to firewalld internal zone.
   ansible.posix.firewalld:
@@ -23,14 +23,14 @@
     immediate: true
     state: enabled
   become: true
-  when: ansible_system == "Linux" and "firewalld" in ansible_facts.packages
+  when: ansible_facts["system"] == "Linux" and "firewalld" in ansible_facts.packages
 
 - name: Start Tailscale.
   ansible.builtin.service:
     name: tailscaled
     state: started
   become: true
-  when: ansible_system == "Linux"
+  when: ansible_facts["system"] == "Linux"
 
 - name: Get Tailscale status.
   ansible.builtin.command: "{{ tailscale_binary_path }} status --json"
@@ -41,7 +41,7 @@
   ansible.builtin.command: "{{ tailscale_binary_path }} up --authkey {{ tailscale_auth_key }}"
   become: true
   when:
-    - ansible_system == "Linux"
+    - ansible_facts["system"] == "Linux"
     - tailscale_status.stdout | from_json | json_query('BackendState') == 'NeedsLogin'
   register: tailscale_up
   ignore_errors: "{{ ansible_check_mode }}"

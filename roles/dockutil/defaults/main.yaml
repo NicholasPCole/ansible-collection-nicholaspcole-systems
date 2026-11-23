@@ -16,4 +16,4 @@ dockutil_apps:
   - /Applications/iTerm.app
 dockutil_folders:
   - /Applications
-  - "{{ ansible_user_dir }}"
+  - "{{ ansible_facts['user_dir'] }}"

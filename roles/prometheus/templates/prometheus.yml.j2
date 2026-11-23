@@ -8,7 +8,7 @@ alerting:
       static_configs:
         - targets:
 {% for host in groups['leader'] %}
-            - alertmanager.{{ hostvars[host]['ansible_nodename'] }}.{{ domain_name }}
+            - alertmanager.{{ hostvars[host]['ansible_facts']['nodename'] }}.{{ domain_name }}
 {% endfor %}
 rule_files:
   - /etc/prometheus/alerting_rules/*.yaml
@@ -17,13 +17,13 @@ scrape_configs:
     static_configs:
       - targets:
 {% for host in groups['leader'] %}
-          - {{ hostvars[host]['ansible_nodename'] }}:9089
+          - {{ hostvars[host]['ansible_facts']['nodename'] }}:9089
 {% endfor %}
   - job_name: node
     static_configs:
       - targets:
 {% for host in groups['all'] | sort %}
-          - {{ hostvars[host]['ansible_nodename'] }}:9100
+          - {{ hostvars[host]['ansible_facts']['nodename'] }}:9100
 {% endfor %}
     metric_relabel_configs:
       - source_labels: [instance]

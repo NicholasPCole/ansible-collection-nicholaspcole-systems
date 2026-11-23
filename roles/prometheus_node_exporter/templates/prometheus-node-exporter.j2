@@ -1,4 +1,4 @@
-{% if ansible_system == "Linux" %}
+{% if ansible_facts["system"] == "Linux" %}
 # {{ nicholaspcole_systems_ansible_managed }}
 
 {% raw -%}
@@ -12,4 +12,4 @@ ARGS='{% endif %}--collector.disable-defaults
 {% for argument in prometheus_node_exporter_arguments %}
 {{ argument }}
 {% endfor %}
-{% if ansible_system == "Linux" %}'{% endif %}
+{% if ansible_facts["system"] == "Linux" %}'{% endif %}

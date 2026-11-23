@@ -1,10 +1,10 @@
 ---
 - name: Include system variables.
-  ansible.builtin.include_vars: "{{ ansible_system }}.yaml"
+  ansible.builtin.include_vars: "{{ ansible_facts['system'] }}.yaml"
 
-- name: Include install tasks ({{ ansible_system }}).
+- name: Include install tasks ({{ ansible_facts["system"] }}).
   ansible.builtin.include_tasks:
-    file: install-{{ ansible_system }}.yaml
+    file: install-{{ ansible_facts["system"] }}.yaml
 
 - name: Create the configuration directory.
   ansible.builtin.file:

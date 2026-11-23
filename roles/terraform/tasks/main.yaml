@@ -3,17 +3,17 @@
   community.general.homebrew_tap:
     name: hashicorp/tap
     state: present
-  when: ansible_system == "Darwin"
+  when: ansible_facts["system"] == "Darwin"
 
 - name: Trust the Terraform Homebrew formula.
   ansible.builtin.command: /opt/homebrew/bin/brew trust --formula hashicorp/tap/terraform
-  when: ansible_system == "Darwin"
+  when: ansible_facts["system"] == "Darwin"
 
 - name: Install Terraform (macOS).
   community.general.homebrew:
     name: terraform
     state: present
-  when: ansible_system == "Darwin"
+  when: ansible_facts["system"] == "Darwin"
 
 - name: Create the configuration directories.
   ansible.builtin.file:

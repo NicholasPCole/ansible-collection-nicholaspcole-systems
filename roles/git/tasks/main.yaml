@@ -3,14 +3,14 @@
   community.general.homebrew:
     name: git
     state: present
-  when: ansible_system == "Darwin"
+  when: ansible_facts["system"] == "Darwin"
 
 - name: Install git (Linux).
   ansible.builtin.package:
     name: git
     state: present
   become: true
-  when: ansible_system == "Linux"
+  when: ansible_facts["system"] == "Linux"
 
 - name: Create the configuration directory.
   ansible.builtin.file:

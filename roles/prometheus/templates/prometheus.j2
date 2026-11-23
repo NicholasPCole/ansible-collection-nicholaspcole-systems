@@ -1,6 +1,6 @@
 # {{ nicholaspcole_systems_ansible_managed }}
 
-{% if ansible_system == "Linux" %}
+{% if ansible_facts["system"] == "Linux" %}
 {% raw -%}
 # Set the command-line arguments to pass to the server.
 # Due to shell escaping, to pass backslashes for regexes, you need to double
@@ -9,4 +9,4 @@
 {% endraw %}
 
 ARGS='{% endif %}--web.listen-address="{{ prometheus_listen_address }}:9089"
-{% if ansible_system == "Linux" %}'{% endif %}
+{% if ansible_facts["system"] == "Linux" %}'{% endif %}

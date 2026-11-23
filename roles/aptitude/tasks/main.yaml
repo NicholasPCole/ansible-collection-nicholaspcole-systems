@@ -5,7 +5,7 @@
     state: present
     update_cache: true
   become: true
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
 
 - name: Create the configuration directory.
   ansible.builtin.file:
@@ -15,7 +15,7 @@
     group: root
     state: directory
   become: true
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
 
 - name: Configure aptitude.
   ansible.builtin.template:
@@ -23,4 +23,4 @@
     dest: /etc/apt/apt.conf
     mode: '0644'
   become: true
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"

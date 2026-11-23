@@ -4,7 +4,7 @@
     key: "{{ sublime_text_gpg_key_url }}"
     state: present
   become: true
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts["os_family"] == "RedHat"
 
 - name: Add the stable repository (Red Hat).
   ansible.builtin.yum_repository:
@@ -15,4 +15,4 @@
     enabled: true
     gpgkey: "{{ sublime_text_gpg_key_url }}"
   become: true
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts["os_family"] == "RedHat"

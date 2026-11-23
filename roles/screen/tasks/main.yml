@@ -3,14 +3,14 @@
   community.general.homebrew:
     name: screen
     state: present
-  when: ansible_system == "Darwin"
+  when: ansible_facts["system"] == "Darwin"
 
 - name: Install screen (Linux).
   package:
     name: screen
     state: present
   become: true
-  when: ansible_system == "Linux"
+  when: ansible_facts["system"] == "Linux"
 
 - name: Configure screen.
   template:

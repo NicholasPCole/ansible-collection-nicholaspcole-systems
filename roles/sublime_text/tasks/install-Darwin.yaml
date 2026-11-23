@@ -3,4 +3,4 @@
   community.general.homebrew_cask:
     name: sublime-text
     state: present
-  when: ansible_system == "Darwin"
+  when: ansible_facts["system"] == "Darwin"

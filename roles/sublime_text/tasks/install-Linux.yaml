@@ -1,17 +1,17 @@
 ---
-- name: Include OS family variables ({{ ansible_os_family }}).
+- name: Include OS family variables ({{ ansible_facts['os_family'] }}).
   ansible.builtin.include_vars:
-    file: "{{ ansible_system }}-{{ ansible_os_family }}.yaml"
-  when: ansible_system == "Linux"
+    file: "{{ ansible_facts['system'] }}-{{ ansible_facts['os_family'] }}.yaml"
+  when: ansible_facts["system"] == "Linux"
 
-- name: Include install tasks ({{ ansible_os_family }}).
+- name: Include install tasks ({{ ansible_facts['os_family'] }}).
   ansible.builtin.include_tasks:
-    file: install-{{ ansible_system }}-{{ ansible_os_family }}.yaml
-  when: ansible_system == "Linux"
+    file: install-{{ ansible_facts["system"] }}-{{ ansible_facts['os_family'] }}.yaml
+  when: ansible_facts["system"] == "Linux"
 
 - name: Install Sublime Text (Linux).
   ansible.builtin.package:
     name: sublime-text
     state: present
   become: true
-  when: ansible_system == "Linux"
+  when: ansible_facts["system"] == "Linux"
