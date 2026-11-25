@@ -6,7 +6,7 @@
   tasks:
     - name: Get systemd units.
       community.general.systemd_info:
-      when: ansible_system == "Linux"
+      when: ansible_facts["system"] == "Linux"
       register: systemd_units
       changed_when: false
 
@@ -14,6 +14,6 @@
       ansible.builtin.systemd_service:
         name: "{{ item }}"
         state: restarted
-      when: ansible_system == "Linux"
+      when: ansible_facts["system"] == "Linux"
       become: true
       loop: "{{ systemd_units.units | dict2items | community.general.json_query('[?value.activestate==`failed`].key') }}"
